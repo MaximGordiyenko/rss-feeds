@@ -3,7 +3,7 @@ import { queryParser } from '../utils/utils.js';
 
 const createTableUsersPath = 'query/users/createUsersTable.sql'
 const getUserEmailsPath = 'query/users/findUserEmail.sql';
-const addUserPath = 'query/users/insertUser.sql';
+const insertUserPath = 'query/users/insertUser.sql';
 const findUserByEmailPasswordPath = 'query/users/findUserByEmailPassword.sql';
 const findUserByIdPath = 'query/users/findUserById.sql';
 
@@ -29,8 +29,7 @@ export const Auth = (() => {
   
   const insert = async ({ email, password }) => {
     try {
-      console.log(email, password);
-      const data = await queryParser(addUserPath);
+      const data = await queryParser(insertUserPath);
       return await pool.query(data, [email, password]);
     } catch (error) {
       throw error;

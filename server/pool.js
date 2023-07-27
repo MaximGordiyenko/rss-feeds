@@ -12,13 +12,13 @@ export const pool = new pg.Pool({
 
 export const createDatabaseIfNotExists = async () => {
   const client = await pool.connect();
-  console.log(client);
+  console.info(`Connect to: ${client?.database} 💾, with 🧑🏻‍💻: ${client?.user}`);
   try {
     if (client?.database === 'postgres') {
       await Feeds.createTableFeeds();
       await Auth.createTableUsers();
     }
-    console.info('Postgres create');
+    console.info('Create Feeds & Auth tables.');
   } catch (error) {
     console.error('Error creating database:', error);
   } finally {

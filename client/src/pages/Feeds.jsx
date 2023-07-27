@@ -1,14 +1,13 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
 import { useCookies } from "react-cookie";
-import { useData } from "../context/PostProvider";
-import { Pagination, PageButton, Button } from "../styles";
-import { Feed } from "./Feed";
-import { api } from "../api";
-import { Filter } from "./Filter";
+import { useData } from "../context/constants.jsx";
+import { Pagination, PageButton, Button } from "../styles.jsx";
+import { Feed } from "../components/Feed.jsx";
+import { Filter } from "../components/Filter.jsx";
+import { verifyUser } from "../apis/auth/api.js";
 
-export const Posts = () => {
+export const Feeds = () => {
   const {
     data,
     loading,
@@ -29,32 +28,8 @@ export const Posts = () => {
   
   const handlePageChange = page => setCurrentPage(page);
   
-  const verifyUser = async () => {
-    try {
-      if (!cookies.jwt) {
-        navigate("/login");
-      } else {
-        const { data } = await api.post("/", {});
-        if (!data.status) {
-          removeCookie("jwt");
-          navigate("/login");
-        } else
-          toast(`Hi ${data.user}`, {
-            theme: "dark",
-          });
-      }
-    } catch (error) {
-      throw error;
-    }
-  };
-  
-  const logOut = () => {
-    removeCookie("jwt");
-    navigate("/login");
-  };
-  
   useEffect(() => {
-    verifyUser();
+    verifyUser(cookies, navigate, removeCookie).then(r => r);
     fetchData();
   }, [cookies, navigate, removeCookie]);
   
@@ -98,7 +73,6 @@ export const Posts = () => {
           </PageButton>
         )}
       </Pagination>
-      <Button onClick={logOut}>Log out</Button>
     </>
   );
 };

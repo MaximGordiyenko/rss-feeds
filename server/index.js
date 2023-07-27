@@ -6,7 +6,7 @@ import feedRouter from './routes/feeds.js';
 import authRouter from './routes/auth.js';
 import { createDatabaseIfNotExists } from "./pool.js";
 
-const PORT = process.env.NODE_LOCAL_PORT || 3000;
+const PORT = process.env.NODE_LOCAL_PORT || 4000;
 const app = express();
 
 dotenv.config();

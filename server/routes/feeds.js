@@ -59,7 +59,6 @@ router.get('/feed/sort/asc', async (req, res) => {
 
 router.get('/feed/filter', async (req, res) => {
   const { title } = req.query;
-  console.log('title:=>', title);
   const feeds = await Feeds.filterTitle(title);
   res.status(200).send(feeds);
 });

@@ -1,4 +1,4 @@
-import { createContext, useReducer, useContext } from "react";
+import { createContext, useReducer } from "react";
 import { initialState } from "../store/store";
 import { reducer } from "../reducer/post.reducer";
 import {
@@ -8,14 +8,13 @@ import {
   getSortedDataByTitleDesc,
   getSortedDataByTitleAsc,
   getFilteredDataByTitle
-} from "../api";
+} from "../apis/feed/api.js";
 import { inputAction } from "../action/post.action";
 
-export const DataContext = createContext();
-export const useData = () => useContext(DataContext);
+export const DataContext = createContext(undefined);
 
 export const PostProvider = ({ children }) => {
-  const [state, dispatch] = useReducer(reducer, initialState);
+  const [state, dispatch] = useReducer(reducer, initialState, undefined);
   
   const contextValue = {
     data: state.data,

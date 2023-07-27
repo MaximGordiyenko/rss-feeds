@@ -1,77 +1,88 @@
-import { useState, useEffect } from "react";
-import { Link, } from "react-router-dom";
-import { useCookies } from "react-cookie";
-import { toast } from "react-toastify";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate, } from "react-router-dom";
+import {
+  Box, InputAdornment, IconButton, FormControl, Typography, Input, TextField, Grid
+} from "@mui/material";
 import { Button } from "../styles";
-import { api } from "../api";
+import { api } from "../apis/constants.js";
+import { AccountCircle, VisibilityOff, Visibility } from "@mui/icons-material";
+import { useState } from "react";
 
 export const Login = () => {
-  const [cookies] = useCookies(["jwt"]);
+  const [showPassword, setShowPassword] = useState(false);
+  const [values, setValues] = useState({ email: "", password: "" });
   const navigate = useNavigate();
   
-  useEffect(() => {
-    if (cookies.jwt) {
-      navigate("/");
-    }
-  }, [cookies, navigate]);
+  const handleClickShowPassword = () => setShowPassword((show) => !show);
   
-  const [values, setValues] = useState({ email: "", password: "" });
+  const handleMouseDownPassword = (event) => {
+    event.preventDefault();
+  };
   
-  const generateError = (error) =>
-    toast.error(error, {
-      position: "bottom-right",
-    });
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
       const { data } = await api.post("/login", { ...values });
-      if (data) {
-        if (data.errors) {
-          const { email, password } = data.errors;
-          if (email) generateError(email);
-          else if (password) generateError(password);
-        } else {
-          navigate("/");
-        }
+      if (data && data.errors) {
+        const { email, password } = data.errors;
+        const errorType = email ? email : password;
+        console.log("Error:", errorType);
+      } else {
+        navigate("/");
       }
-    } catch (ex) {
-      console.log(ex);
+    } catch (error) {
+      console.log(error);
+      throw error;
     }
   };
   
   return (
-    <div className="container">
-      <h2>Login to your Account</h2>
-      <form onSubmit={(e) => handleSubmit(e)}>
-        <div>
-          <label htmlFor="email">Email</label>
-          <input
-            type="email"
-            name="email"
-            placeholder="Email"
-            onChange={(e) =>
-              setValues({ ...values, [e.target.name]: e.target.value })
-            }
-          />
-        </div>
-        <div>
-          <label htmlFor="password">Password</label>
-          <input
-            type="password"
-            placeholder="Password"
-            name="password"
-            onChange={(e) =>
-              setValues({ ...values, [e.target.name]: e.target.value })
-            }
-          />
-        </div>
-        <span>
-          Don't have an account ?<Link to="/register"> Register </Link>
-        </span>
-        <br/>
-        <Button type="submit">Submit</Button>
-      </form>
-    </div>
+    <Grid container justifyContent="center">
+      <Grid item>
+        <h2>Login to your Account</h2>
+        <Box component="form" onSubmit={(e) => handleSubmit(e)}>
+          <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
+            <TextField
+              id="standard-basic"
+              variant="standard"
+              label="Email"
+              type="email"
+              name="email"
+              placeholder="Email"
+              onChange={(e) => setValues({ ...values, [e.target.name]: e.target.value })}
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <AccountCircle/>
+                  </InputAdornment>
+                )
+              }}
+            />
+            <Input
+              id="outlined-adornment-password"
+              variant="standard"
+              label="Password"
+              type={showPassword ? 'text' : 'password'}
+              name="password"
+              placeholder="Password"
+              onChange={(e) => setValues({ ...values, [e.target.name]: e.target.value })}
+              endAdornment={
+                <InputAdornment position="end">
+                  <IconButton
+                    aria-label="toggle password visibility"
+                    onClick={handleClickShowPassword}
+                    onMouseDown={handleMouseDownPassword}>
+                    {showPassword ? <VisibilityOff/> : <Visibility/>}
+                  </IconButton>
+                </InputAdornment>
+              }
+            />
+          </FormControl>
+          <Typography variant="overline" component="p">
+            Do not have an account ?<Link to="/register"> Register </Link>
+          </Typography>
+          <Button type="submit">Login</Button>
+        </Box>
+      </Grid>
+    </Grid>
   );
 };
