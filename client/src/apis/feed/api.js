@@ -1,9 +1,9 @@
 import { api } from "../constants.js";
 import { FETCH_SUCCESS, FETCH_ERROR } from "../../types/post.types.jsx";
 
-export const fetchData = async (dispatch) => {
+export const fetchFeeds = async (dispatch) => {
   try {
-    const { data } = await api.get('feed');
+    const { data } = await api.get('/feed');
     dispatch({
       type: FETCH_SUCCESS,
       payload: data

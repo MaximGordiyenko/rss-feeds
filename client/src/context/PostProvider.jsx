@@ -2,7 +2,7 @@ import { createContext, useReducer } from "react";
 import { initialState } from "../store/store";
 import { reducer } from "../reducer/post.reducer";
 import {
-  fetchData,
+  fetchFeeds,
   updateData,
   deleteData,
   getSortedDataByTitleDesc,
@@ -10,6 +10,7 @@ import {
   getFilteredDataByTitle
 } from "../apis/feed/api.js";
 import { inputAction } from "../action/post.action";
+import { getAllUsers } from "../apis/user/api.js";
 
 export const DataContext = createContext(undefined);
 
@@ -25,12 +26,13 @@ export const PostProvider = ({ children }) => {
     content: state.content,
     filterTitle: state.filterTitle,
     dispatch,
-    fetchData: () => fetchData(dispatch),
+    fetchFeeds: () => fetchFeeds(dispatch),
     getSortedDataByTitleDesc: () => getSortedDataByTitleDesc(dispatch),
     getSortedDataByTitleAsc: () => getSortedDataByTitleAsc(dispatch),
     getFilteredDataByTitle: (filterTitle) => getFilteredDataByTitle(filterTitle, dispatch),
     updateData: (id, newData) => updateData(id, newData, dispatch),
     deleteData: (id) => deleteData(id, dispatch),
+    getAllUsers: () => getAllUsers(dispatch),
     inputAction
   };
   

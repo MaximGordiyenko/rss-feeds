@@ -12,7 +12,7 @@ export const Feeds = () => {
     data,
     loading,
     error,
-    fetchData,
+    fetchFeeds,
     getSortedDataByTitleDesc,
     getSortedDataByTitleAsc
   } = useData();
@@ -30,7 +30,7 @@ export const Feeds = () => {
   
   useEffect(() => {
     verifyUser(cookies, navigate, removeCookie).then(r => r);
-    fetchData();
+    fetchFeeds();
   }, [cookies, navigate, removeCookie]);
   
   if (loading) {

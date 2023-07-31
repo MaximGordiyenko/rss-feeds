@@ -1,4 +1,4 @@
-import { pool } from "../pool.js";
+import { db } from "../db.js";
 import { queryParser } from '../utils/utils.js';
 
 const createTableFeedsPath = 'query/feeds/createFeedsTable.sql';
@@ -14,7 +14,7 @@ export const Feeds = (() => {
   const createTableFeeds = async () => {
     try {
       const data = await queryParser(createTableFeedsPath);
-      await pool.query(data);
+      await db.query(data);
     } catch (error) {
       throw error;
     }
@@ -23,7 +23,7 @@ export const Feeds = (() => {
   const find = async () => {
     try {
       const data = await queryParser(getAllFeedsPath);
-      const { rows } = await pool.query(data);
+      const { rows } = await db.query(data);
       return rows;
     } catch (error) {
       throw error;
@@ -33,7 +33,7 @@ export const Feeds = (() => {
   const insert = async (title, pubdate, isodate, link, contentsnippet, content, author) => {
     try {
       const data = await queryParser(feedsInsertPath);
-      const { row } = await pool.query(data, [title, pubdate, isodate, link, contentsnippet, content, author]);
+      const { row } = await db.query(data, [title, pubdate, isodate, link, contentsnippet, content, author]);
       return row;
     } catch (error) {
       throw error;
@@ -43,7 +43,7 @@ export const Feeds = (() => {
   const deleteFeed = async (id) => {
     try {
       const data = await queryParser(feedsDeletePath);
-      const { row } = await pool.query(data, [id]);
+      const { row } = await db.query(data, [id]);
       return row;
     } catch (error) {
       throw error;
@@ -53,7 +53,7 @@ export const Feeds = (() => {
   const update = async (id, title, content, author) => {
     try {
       const data = await queryParser(feedsUpdatePath);
-      const { row } = await pool.query(data, [id, title, content, author]);
+      const { row } = await db.query(data, [id, title, content, author]);
       return row;
     } catch (error) {
       throw error;
@@ -63,7 +63,7 @@ export const Feeds = (() => {
   const sortTitleDesc = async () => {
     try {
       const data = await queryParser(feedsSortDescPath);
-      const { rows } = await pool.query(data);
+      const { rows } = await db.query(data);
       return rows;
     } catch (error) {
       throw error;
@@ -73,7 +73,7 @@ export const Feeds = (() => {
   const sortTitleAsc = async () => {
     try {
       const data = await queryParser(feedsSortAscPath);
-      const { rows } = await pool.query(data);
+      const { rows } = await db.query(data);
       return rows;
     } catch (error) {
       throw error;
@@ -83,7 +83,7 @@ export const Feeds = (() => {
   const filterTitle = async (title) => {
     try {
       const data = await queryParser(feedsFilterTitlePath);
-      const { rows } = await pool.query(data, [title]);
+      const { rows } = await db.query(data, [title]);
       return rows;
     } catch (error) {
       throw error;
