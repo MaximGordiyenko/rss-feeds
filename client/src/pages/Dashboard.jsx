@@ -8,9 +8,11 @@ import {
   TableRow,
   TableBody,
   Paper,
-  TextField, Button
+  TextField, Typography, Tooltip, IconButton
 } from "@mui/material";
-import { updateUserRole } from "../apis/user/api.js";
+import { Delete, Upgrade, InfoOutlined } from "@mui/icons-material";
+import { updateUserRole, deleteUser } from "../apis/user/api.js";
+import { editRoleTable } from "../constants/table.constants.js";
 
 export const Dashboard = () => {
   const { data, getAllUsers } = useData();
@@ -38,14 +40,25 @@ export const Dashboard = () => {
     }
   };
   
+  const handleDeleteRoleClick = (id) => {
+    deleteUser(id);
+  };
+  
   return (
-    <TableContainer component={Paper} sx={{ maxWidth: 600, my: 5 }} elevation={24}>
+    <TableContainer component={Paper} sx={{ maxWidth: 600, my: 5 }} elevation={24} square={false}>
+      <Typography variant="h5" component="h1" align="center" gutterBottom>Menage Users
+        <Tooltip title="Update & Delete User">
+          <IconButton>
+            <InfoOutlined sx={{color: 'orange', fontSize: 15}}/>
+          </IconButton>
+        </Tooltip>
+      </Typography>
       <Table size="small">
         <TableHead>
           <TableRow>
-            <TableCell>ID</TableCell>
-            <TableCell>Email</TableCell>
-            <TableCell>Role</TableCell>
+            {editRoleTable.map((item) => (
+              <TableCell key={item}>{item.toUpperCase()}</TableCell>
+            ))}
           </TableRow>
         </TableHead>
         <TableBody>
@@ -60,7 +73,16 @@ export const Dashboard = () => {
                   value={row.role}
                   onChange={(event) => handleRoleChange(row.id, event)}
                 />
-                <Button onClick={() => handleUpdateRoleClick(row.id)}>Update</Button>
+                <Tooltip title="Update">
+                  <IconButton onClick={() => handleUpdateRoleClick(row.id)}>
+                    <Upgrade sx={{color: 'green'}}/>
+                  </IconButton>
+                </Tooltip>
+                <Tooltip title="Delete">
+                  <IconButton onClick={() => handleDeleteRoleClick(row.id)}>
+                    <Delete sx={{color: 'red'}}/>
+                  </IconButton>
+                </Tooltip>
               </TableCell>
             </TableRow>
           ))}

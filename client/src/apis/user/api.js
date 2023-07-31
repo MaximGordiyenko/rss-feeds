@@ -21,5 +21,15 @@ export const updateUserRole = async (id, role) => {
     await api.put(`/updateUserRole/${id}`, { role });
   } catch (error) {
     console.log(error.message);
+    throw error;
+  }
+};
+
+export const deleteUser = async (id) => {
+  try {
+    await api.delete(`/deleteUser/${id}`);
+  } catch (error) {
+    console.log(error.message);
+    throw error;
   }
 };
