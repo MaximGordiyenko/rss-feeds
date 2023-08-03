@@ -11,15 +11,17 @@ import {
   TextField, Typography, Tooltip, IconButton
 } from "@mui/material";
 import { Delete, Upgrade, InfoOutlined } from "@mui/icons-material";
-import { updateUserRole, deleteUser } from "../apis/user/api.js";
+import { updateUserRoleById, deleteUserById } from "../apis/user/api.js";
 import { editRoleTable } from "../constants/table.constants.js";
 
 export const Dashboard = () => {
-  const { data, getAllUsers } = useData();
+  const { data, getAllUsers, getOccupationsAndProjects } = useData();
   const [tableData, setTableData] = useState([]);
   
+  //FIXME: 1. function getOccupationsAndProjects() rewrite data in store
   useEffect(() => {
     getAllUsers();
+    // getOccupationsAndProjects();
   }, []);
   
   useEffect(() => {
@@ -28,22 +30,22 @@ export const Dashboard = () => {
   
   const handleRoleChange = (id, event) => {
     const updatedData = tableData.map((item) =>
-      item.id === id ? { ...item, role: event.target.value } : item
+      item.role_id === id ? { ...item, type: [event.target.value] } : item
     );
     setTableData(updatedData);
   };
   
   const handleUpdateRoleClick = (id) => {
-    const userToUpdate = tableData.find((item) => item.id === id);
+    const userToUpdate = tableData.find((item) => item.role_id === id);
     if (userToUpdate) {
-      updateUserRole(id, userToUpdate.role);
+      updateUserRoleById(id, userToUpdate.type).then(r => r);
     }
   };
   
   const handleDeleteRoleClick = (id) => {
-    deleteUser(id);
+    deleteUserById(id).then(r => r);
   };
-  
+  console.log(data);
   return (
     <TableContainer component={Paper} sx={{ maxWidth: 600, my: 5 }} elevation={24} square={false}>
       <Typography variant="h5" component="h1" align="center" gutterBottom>Menage Users
@@ -55,11 +57,13 @@ export const Dashboard = () => {
       </Typography>
       <Table size="small">
         <TableHead>
-          <TableRow>
-            {editRoleTable.map((item) => (
-              <TableCell key={item}>{item.toUpperCase()}</TableCell>
-            ))}
+            {editRoleTable.map(({ id, idCell, emailCell, roleCell }) => (
+          <TableRow key={id}>
+              <TableCell>{idCell.toUpperCase()}</TableCell>
+              <TableCell>{emailCell.toUpperCase()}</TableCell>
+              <TableCell>{roleCell.toUpperCase()}</TableCell>
           </TableRow>
+            ))}
         </TableHead>
         <TableBody>
           {tableData.map((row) => (
@@ -70,11 +74,11 @@ export const Dashboard = () => {
                 <TextField
                   variant="standard"
                   size="small"
-                  value={row.role}
-                  onChange={(event) => handleRoleChange(row.id, event)}
+                  value={row.type}
+                  onChange={(event) => handleRoleChange(row.role_id, event)}
                 />
                 <Tooltip title="Update">
-                  <IconButton onClick={() => handleUpdateRoleClick(row.id)}>
+                  <IconButton onClick={() => handleUpdateRoleClick(row.role_id)}>
                     <Upgrade sx={{color: 'green'}}/>
                   </IconButton>
                 </Tooltip>

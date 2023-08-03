@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useCookies } from "react-cookie";
-import { useData } from "../context/constants.jsx";
-import { Pagination, PageButton, Button } from "../styles.jsx";
-import { Feed } from "../components/Feed.jsx";
-import { Filter } from "../components/Filter.jsx";
-import { verifyUser } from "../apis/auth/api.js";
+import { useData } from "../../context/constants.jsx";
+import { Button } from "../../styles.jsx";
+import { Feed } from "../../components/feeds/Feed.jsx";
+import { Filter } from "../../components/Filter.jsx";
+import { verifyUser } from "../../apis/auth/api.js";
+import { Pagination, PageButton } from "./feeds.styles.js";
 
 export const Feeds = () => {
   const {

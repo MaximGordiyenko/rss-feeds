@@ -1,9 +1,9 @@
 import { db } from "../db.js";
 import { queryParser } from '../utils/utils.js';
 
-const updateUserRolePath = 'query/user/updateUserRole.sql';
-const getAllUsersPath = 'query/user/getAllUsers.sql';
-const deleteUserPath = 'query/user/deleteUser.sql';
+const getAllUsersPath = 'query/users/getAllUsers.sql';
+const updateUserRolePath = 'query/users/updateUserRole.sql';
+const deleteUserPath = 'query/users/deleteUser.sql';
 
 export const User = (() => {
   const queryAllUsers = async () => {
@@ -16,10 +16,10 @@ export const User = (() => {
     }
   };
   
-  const updateUserRole = async (id, role) => {
+  const updateUserRole = async (id, type) => {
     try {
       const data = await queryParser(updateUserRolePath);
-      const { row } = await db.query(data, [id, role]);
+      const { row } = await db.query(data, [id, type]);
       return row;
     } catch (error) {
       throw error;

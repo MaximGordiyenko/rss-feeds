@@ -11,10 +11,12 @@ import {
 } from "../apis/feed/api.js";
 import { inputAction } from "../action/post.action";
 import { getAllUsers } from "../apis/user/api.js";
+import { getAllBooks } from "../apis/book/api.js";
+import { getOccupationsAndProjects } from "../apis/occupation/api.js";
 
 export const DataContext = createContext(undefined);
 
-export const PostProvider = ({ children }) => {
+export const MainProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState, undefined);
   
   const contextValue = {
@@ -33,6 +35,8 @@ export const PostProvider = ({ children }) => {
     updateData: (id, newData) => updateData(id, newData, dispatch),
     deleteData: (id) => deleteData(id, dispatch),
     getAllUsers: () => getAllUsers(dispatch),
+    getAllBooks: () => getAllBooks(dispatch),
+    getOccupationsAndProjects: () => getOccupationsAndProjects(dispatch),
     inputAction
   };
   

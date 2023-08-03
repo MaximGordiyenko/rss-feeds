@@ -1,5 +1,6 @@
-import { Container, Input, Button } from "../styles";
-import { useData } from "../context/constants.jsx";
+import { Input, Button } from "../../styles.jsx";
+import { useData } from "../../context/constants.jsx";
+import { Container } from "./feed.styles.js";
 
 export const EditModal = ({ id, isOpen, setIsOpen, feed }) => {
   const { updateData, inputAction, title, author, content, dispatch } = useData();

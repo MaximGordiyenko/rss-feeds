@@ -1,10 +1,8 @@
 import express from 'express';
 import Parser from 'rss-parser';
 import CronJob from 'node-cron';
-import shortid from 'shortid';
 import { Feeds } from '../repos/feeds.js';
 
-const uniqueId = shortid.generate();
 const router = express.Router();
 
 const parseRSSFeed = async () => {
@@ -28,15 +26,13 @@ router.get('/feed', async (req, res) => {
     const feeds = await Feeds.find();
     res.status(200).send(feeds);
   } catch (error) {
-    return res.status(500).send(error);
+    res.status(500).send(error);
   }
 });
 
 router.delete('/feed/:id', async (req, res) => {
   const { id } = req.params;
   await Feeds.deleteFeed(id);
-  
-  console.log('deleteFeed:', req.params.id);
   res.status(200).send(req.params.id);
 });
 

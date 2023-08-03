@@ -2,28 +2,13 @@ import { useState } from "react";
 import { AppBar, Box, Toolbar, IconButton, Typography, Menu, Container, Avatar, Button, Tooltip, MenuItem } from '@mui/material';
 import { MenuOutlined, ApiOutlined } from '@mui/icons-material';
 import { Link } from "react-router-dom";
-import { styled } from "@mui/material";
-import { pages, settings } from "../constants/navbar.constants.js";
-import { Logout } from "./Logout.jsx";
+import { pages, settings } from "../../constants/navbar.constants.js";
+import { Logout } from "../Logout.jsx";
+import { LinkCSS } from "./navbar.styles.js";
 
 export const NavBar = () => {
   const [anchorElNav, setAnchorElNav] = useState(null);
   const [anchorElUser, setAnchorElUser] = useState(null);
-  
-  const handleOpenNavMenu = (event) => {
-    setAnchorElNav(event.currentTarget);
-  };
-  const handleOpenUserMenu = (event) => {
-    setAnchorElUser(event.currentTarget);
-  };
-  
-  const handleCloseNavMenu = () => {
-    setAnchorElNav(null);
-  };
-  
-  const handleCloseUserMenu = () => {
-    setAnchorElUser(null);
-  };
   
   return (
     <AppBar position="static">
@@ -53,7 +38,7 @@ export const NavBar = () => {
               aria-label="account of current user"
               aria-controls="menu-appbar"
               aria-haspopup="true"
-              onClick={handleOpenNavMenu}
+              onClick={(event) => setAnchorElNav(event.currentTarget)}
               color="inherit">
               <MenuOutlined/>
             </IconButton>
@@ -70,13 +55,13 @@ export const NavBar = () => {
                 horizontal: 'left',
               }}
               open={Boolean(anchorElNav)}
-              onClose={handleCloseNavMenu}
+              onClose={() =>setAnchorElNav(null)}
               sx={{
                 display: { xs: 'block', md: 'none' },
               }}>
-              {pages.map((page) => (
-                <MenuItem key={page.id} onClick={handleCloseNavMenu}>
-                  <LinkCSS to={page.link}>{page.page}</LinkCSS>
+              {pages.map(({ id, link, page }) => (
+                <MenuItem key={id} onClick={() => setAnchorElNav(null)}>
+                  <LinkCSS to={link}>{page}</LinkCSS>
                 </MenuItem>
               ))}
             </Menu>
@@ -100,19 +85,19 @@ export const NavBar = () => {
             FEEDS
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-            {pages.map((page) => (
+            {pages.map(({ id, link, page }) => (
               <Button
-                key={page.id}
-                onClick={handleCloseNavMenu}
+                key={id}
+                onClick={() => setAnchorElNav(null)}
                 sx={{ my: 2, color: 'white', display: 'block' }}>
-                <LinkCSS to={page.link}>{page.page}</LinkCSS>
+                <LinkCSS to={link}>{page}</LinkCSS>
               </Button>
             ))}
           </Box>
           
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
-              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+              <IconButton onClick={(event) => setAnchorElUser(event.currentTarget)} sx={{ p: 0 }}>
                 <Avatar alt="Remy Sharp" src=""/>
               </IconButton>
             </Tooltip>
@@ -130,10 +115,10 @@ export const NavBar = () => {
                 horizontal: 'right',
               }}
               open={Boolean(anchorElUser)}
-              onClose={handleCloseUserMenu}>
-              {settings.map((setting) => (
-                <MenuItem key={setting.id} onClick={handleCloseUserMenu}>
-                  <Link to={setting.link}>{setting.page}</Link>
+              onClose={() => setAnchorElUser(null)}>
+              {settings.map(({ id, link, page }) => (
+                <MenuItem key={id} onClick={() => setAnchorElUser(null)}>
+                  <Link to={link}>{page}</Link>
                 </MenuItem>
               ))}
               <Logout/>
@@ -144,8 +129,3 @@ export const NavBar = () => {
     </AppBar>
   );
 };
-
-const LinkCSS = styled(Link)`
-  text-decoration-line: none;
-  color: white;
-`;

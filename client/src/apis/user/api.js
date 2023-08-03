@@ -16,20 +16,20 @@ export const getAllUsers = async (dispatch) => {
   }
 };
 
-export const updateUserRole = async (id, role) => {
+export const updateUserRoleById = async (id, type) => {
   try {
-    await api.put(`/updateUserRole/${id}`, { role });
+    await api.put(`/updateUserRole/${id}`, { type });
   } catch (error) {
-    console.log(error.message);
+    console.error(error.message);
     throw error;
   }
 };
 
-export const deleteUser = async (id) => {
+export const deleteUserById = async (id) => {
   try {
     await api.delete(`/deleteUser/${id}`);
   } catch (error) {
-    console.log(error.message);
+    console.error(error.message);
     throw error;
   }
 };

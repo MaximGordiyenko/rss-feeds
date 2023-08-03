@@ -23,12 +23,12 @@ export const Register = () => {
       if (data && data.errors) {
         const { email, password } = data.errors;
         const errorType = email ? email : password;
-        console.log("Error:", errorType);
+        console.error("Error:", errorType);
       } else {
         navigate("/");
       }
     } catch (error) {
-      console.log(error);
+      console.error(error);
       throw error;
     }
   };
