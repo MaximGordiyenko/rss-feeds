@@ -1,5 +1,5 @@
 import { Input, Button } from "../styles";
-import { useData } from "../context/PostProvider";
+import { useData } from "../context/constants.jsx";
 
 export const Filter = () => {
   const {

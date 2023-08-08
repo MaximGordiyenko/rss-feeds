@@ -1,8 +1,7 @@
 import { useState } from "react";
-import parse from 'html-react-parser';
-import { StyledFeedItem, Title, Meta, ContentSnippet, Content, Author } from "../styles";
-import { useData } from "../context/PostProvider";
-import { EditModal } from "../modals/EditModal";
+import { useData } from "../../context/constants.jsx";
+import { EditModal } from "../../modals/feed/EditModal.jsx";
+import { StyledFeedItem, Title, Meta, ContentSnippet, Content, Author } from "./feed.styles.js";
 
 export const Feed = ({ id, title, pubDate, isoDate, contentSnippet, content, author, feed }) => {
   const { deleteData } = useData();

@@ -44,5 +44,29 @@ bcrypt: Link to bcrypt GitHub repository
 cors: Link to cors GitHub repository
 node-cron: Link to node-cron GitHub repository
 rss-parser: Link to rss-parser GitHub repository
-postgres: Link to PostgreSQL
+postgres: Link to PostgresQL
 Thank you for your contributions to the open-source community!
+
+| users                           | companies                   | feeds                   | authors             | locations | books                   |
+|---------------------------------|-----------------------------|-------------------------|---------------------|-----------|-------------------------|
+| id                              | id                          | id                      | id                  | id        | id                      |
+| email                           | name                        | title                   | name                | city      | title                   |
+| password                        | address                     | pubdate                 | status              | state     | year                    |
+| nickname                        | phone                       | isodate                 | age                 | country   | genre                   |
+| create_at                       | email                       | link                    | sex                 | zip       | [author_id](authors.id) |
+| update_at                       | website                     | content                 | [book_id](books.id) | latitude  |                         |
+| [role_id](role.id)              | logo                        | contentSnippet          |                     | longitude |                         |
+| [company_id](companies.id)      | description                 | author                  |                     | create_at |                         |
+| [location_id](locations.id)     | create_at                   | [user_id](users.id)     |                     | update_at |                         |
+| [occupation_id](occupations.id) | update_at                   | [author_id](authors.id) |                     |           |                         |
+|                                 | [location_id](locations.id) | [book_id](books.id)     |                     |           |                         |
+
+| occupations | roles | socials                     |
+|-------------|-------|-----------------------------|
+| id          | id    | id                          |
+| name        | type  | name                        |
+|             |       | logo                        |
+|             |       | link                        |
+|             |       | [role_id](roles.id)         |
+|             |       | [user_id](users.id)         |
+|             |       | [location_id](locations.id) |

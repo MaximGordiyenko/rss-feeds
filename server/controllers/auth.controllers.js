@@ -34,10 +34,10 @@ const handleErrors = (err) => {
 };
 
 export const register = async (req, res, next) => {
+  const { email, password } = req.body;
   try {
-    const { email, password } = req.body;
-    await Auth.insert({ email, password });
-    const findUser = await Auth.findByEmail(email);
+    await Auth.insertUser({ email, password });
+    const findUser = await Auth.findUserEmail(email);
     const token = createToken(findUser[0].id);
     
     res.cookie("jwt", token, {
@@ -53,7 +53,7 @@ export const register = async (req, res, next) => {
   }
 };
 
-export const login = async (req, res) => {
+export const login = async (req, res, next) => {
   const { email, password } = req.body;
   try {
     const user = await Auth.findUserByEmailPassword(email, password);

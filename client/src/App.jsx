@@ -1,17 +1,11 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { Register } from "./pages/Register";
-import { Login } from "./pages/Login";
-import { Posts } from "./components/Posts";
+import { RouterProvider } from "react-router-dom";
+import { routes } from "./routes.jsx";
 
 export const App = () => {
   
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route exact path="/register" element={<Register/>}/>
-        <Route exact path="/login" element={<Login/>}/>
-        <Route exact path="/" element={<Posts/>}/>
-      </Routes>
-    </BrowserRouter>
+    <>
+      <RouterProvider router={routes}/>
+    </>
   );
 };

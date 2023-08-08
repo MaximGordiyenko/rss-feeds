@@ -1,15 +1,9 @@
-import axios from "axios";
-import { FETCH_SUCCESS, FETCH_ERROR } from "./types/post.types";
+import { api } from "../constants.js";
+import { FETCH_SUCCESS, FETCH_ERROR } from "../../types/post.types.jsx";
 
-export const api = axios.create({
-  baseURL: 'http://localhost:3000',
-  headers: { "Content-type": "application/json" },
-  withCredentials: true,
-});
-
-export const fetchData = async (dispatch) => {
+export const fetchFeeds = async (dispatch) => {
   try {
-    const { data } = await api.get('feed');
+    const { data } = await api.get('/feed');
     dispatch({
       type: FETCH_SUCCESS,
       payload: data

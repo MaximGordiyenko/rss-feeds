@@ -1,37 +1,36 @@
-import { pool } from '../pool.js';
+import { db } from '../db.js';
 import { queryParser } from '../utils/utils.js';
 
-const createTableUsersPath = 'query/users/createUsersTable.sql'
-const getUserEmailsPath = 'query/users/findUserEmail.sql';
-const addUserPath = 'query/users/insertUser.sql';
-const findUserByEmailPasswordPath = 'query/users/findUserByEmailPassword.sql';
-const findUserByIdPath = 'query/users/findUserById.sql';
+const createUserTablePath = 'query/auth/createUserTable.sql';
+const findUserEmailPath = 'query/auth/findUserEmail.sql';
+const insertUserPath = 'query/auth/insertUser.sql';
+const findUserByEmailPasswordPath = 'query/auth/findUserByEmailPassword.sql';
+const findUserByIdPath = 'query/auth/findUserById.sql';
 
 export const Auth = (() => {
-  const createTableUsers = async () => {
+  const createUserTable = async () => {
     try {
-      const data = await queryParser(createTableUsersPath);
-      await pool.query(data);
+      const data = await queryParser(createUserTablePath);
+      await db.query(data);
     } catch (error) {
       throw error;
     }
-  }
+  };
   
-  const findByEmail = async (email) => {
+  const findUserEmail = async (email) => {
     try {
-      const data = await queryParser(getUserEmailsPath);
-      const { rows } = await pool.query(data, [email]);
+      const data = await queryParser(findUserEmailPath);
+      const { rows } = await db.query(data, [email]);
       return rows;
     } catch (error) {
       throw error;
     }
   };
   
-  const insert = async ({ email, password }) => {
+  const insertUser = async ({ email, password }) => {
     try {
-      console.log(email, password);
-      const data = await queryParser(addUserPath);
-      return await pool.query(data, [email, password]);
+      const data = await queryParser(insertUserPath);
+      return await db.query(data, [email, password]);
     } catch (error) {
       throw error;
     }
@@ -40,7 +39,7 @@ export const Auth = (() => {
   const findUserByEmailPassword = async (email, password) => {
     try {
       const data = await queryParser(findUserByEmailPasswordPath);
-      const { rows } = await pool.query(data, [email, password]);
+      const { rows } = await db.query(data, [email, password]);
       return rows;
     } catch (error) {
       throw error;
@@ -50,7 +49,7 @@ export const Auth = (() => {
   const findUserById = async (id) => {
     try {
       const data = await queryParser(findUserByIdPath);
-      const { rows } = await pool.query(data, [id]);
+      const { rows } = await db.query(data, [id]);
       return rows;
     } catch (error) {
       throw error;
@@ -58,9 +57,9 @@ export const Auth = (() => {
   };
   
   return {
-    createTableUsers,
-    findByEmail,
-    insert,
+    createUserTable,
+    findUserEmail,
+    insertUser,
     findUserByEmailPassword,
     findUserById,
   };
