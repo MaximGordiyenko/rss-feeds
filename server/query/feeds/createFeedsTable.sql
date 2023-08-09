@@ -6,5 +6,8 @@ CREATE TABLE IF NOT EXISTS feeds (
   link TEXT NOT NULL,
   contentsnippet TEXT NOT NULL,
   content TEXT NOT NULL,
-  author TEXT NOT NULL
+  author TEXT NOT NULL,
+  user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
+  author_id INTEGER REFERENCES authors(id) ON DELETE CASCADE,
+  book_id INTEGER REFERENCES books(id) ON DELETE CASCADE
 );

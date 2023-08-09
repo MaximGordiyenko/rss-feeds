@@ -4,26 +4,38 @@ import { Auth } from "./repos/auth.js";
 import { Sequelize } from "sequelize";
 
 export const db = new pg.Pool({
-  host: process.env.PG_HOST,
-  port: process.env.PG_LOCAL_PORT,
+  host: process.env.PSQL_HOST,
+  port: process.env.PSQL_PORT,
   database: 'postgres',
-  user: process.env.PG__USER,
-  password: process.env.PG_PASSWORD,
+  user: process.env.PSQL_USER,
+  password: process.env.PSQL_PASSWORD,
 });
 
 const sequelizeOptions = {
-  host: process.env.PG_HOST,
-  port: process.env.PG_LOCAL_PORT,
-  dialect: 'postgres',
+  host: process.env.PSQL_HOST || "localhost",
+  port: process.env.PSQL_PORT || 5432,
+  dialect: "postgres",
   pool: {
-    max: 5,
+    max: 100,
     min: 0,
-    acquire: 30000,
-    idle: 10000,
+    idle: 200000,
+    acquire: 1000000,
   }
 };
 
-export const sequelize = new Sequelize('postgres', process.env.PG__USER, process.env.PG_PASSWORD, sequelizeOptions);
+
+export let sequelize;
+
+if (process.env.NODE_ENV === "production") {
+  sequelize = new Sequelize(process.env.DATABASE_URL);
+} else {
+  sequelize = new Sequelize(
+    process.env.PSQL_NAME || "postgres",
+    process.env.PSQL_USER || "maxim",
+    process.env.PSQL_PASSWORD || "",
+    sequelizeOptions
+  );
+}
 
 export const createDatabaseIfNotExists = async () => {
   const client = await db.connect();

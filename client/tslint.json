@@ -1,9 +1,0 @@
-{
-  "extends": "tslint:recommended",
-  "linterOptions": {
-    "exclude": ["**/*.js", "**/*.jsx"]
-  },
-  "rules": {
-    "no-any": false
-  }
-}
