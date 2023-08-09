@@ -1,9 +1,9 @@
 FROM node:alpine
 
-WORKDIR /usr/src/app
+WORKDIR /usr/src/server
 
 COPY . .
 
 RUN npm install
 
-#EXPOSE 3000
+EXPOSE 4000

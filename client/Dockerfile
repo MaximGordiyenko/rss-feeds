@@ -1,9 +1,9 @@
 FROM node:alpine
 
-WORKDIR /usr/src/app
+WORKDIR /usr/src/client
 
 COPY . .
 
 RUN npm install
 
-#EXPOSE 5173
+EXPOSE 5173

@@ -3,52 +3,72 @@ version: '3'
 services:
   
   back-end:
-    build:
-      context: server
+    build: ./server
+    depends_on:
+      - database
+    ports:
+      - "4000:4000"
+    networks:
+      - node-network
     container_name: back-end
     working_dir: /usr/src/app
-    networks:
-      - node-network
     volumes:
       - ./server:/usr/src/app
-      - /usr/src/app/node_modules
+#      - /usr/src/app/node_modules
+    environment:
+      PSQL_HOST: database
+      POSTGRES_DB: postgres
+      POSTGRES_HOST: localhost
+      POSTGRES_PORT: 5432
+      POSTGRES_USER: maxim
+      POSTGRES_PASSWORD: ''
+      NODE_LOCAL_PORT: 4000
+      PSQL_PORT: 5432
+      PSQL_NAME: postgres
+      PSQL_USER: maxim
+      PSQL_PASSWORD: ''
     tty: true
-    ports:
-      - "3000:3000"
     command: npm run start
-    depends_on:
-      - db
   
   front-end:
-    build:
-      context: client
+    build: ./client
     container_name: front-end
-    working_dir: /usr/src/app
-    networks:
-      - node-network
-    volumes:
-      - ./client:/usr/src/app
-      - /usr/src/app/node_modules
-    tty: true
+    links:
+      - back-end
     ports:
       - "5173:5173"
+    networks:
+      - node-network
+    working_dir: /usr/src/app
+    volumes:
+      - ./client:/usr/src/app
+#      - /usr/src/app/node_modules
+    environment:
+      PSQL_NAME: postgres
+      PSQL_USER: maxim
+      PSQL_PASSWORD: ''
+      PSQL_PORT: 5432
+      DATABASE_URL: postgres://maxim:''@database:3030/postgres
+    env_file:
+      - ./.env
     command: npm run dev
   
-  db:
-    image: postgres
+  database:
+    image: postgres:15.3-alpine
     container_name: postgres
     restart: always
     tty: true
-    volumes:
-      - ./data:/var/lib/postgresql/data
-      - ./server/sql/createUsersTable.sql:/docker-entrypoint-initdb.d/createUsersTable.sql
-    environment:
-      - POSTGRES_HOST_AUTH_METHOD=trust
-      #- POSTGRES_PASSWORD=1234
     ports:
       - "5432:5432"
     networks:
       - node-network
+    volumes:
+      - ./database:/var/lib/postgresql/data
+      - ./server/sql/createUsersTable.sql:/docker-entrypoint-initdb.d/createUsersTable.sql
+    environment:
+      - POSTGRES_HOST_AUTH_METHOD=trust
+      - POSTGRES_USER=maxim
+      - POSTGRES_PASSWORD=''
   
   nginx:
     build:
@@ -63,6 +83,9 @@ services:
     depends_on:
       - back-end
       - front-end
+
+volumes:
+  database:
 
 networks:
   node-network:

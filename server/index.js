@@ -9,12 +9,8 @@ import bookRouter from './routes/book.js';
 import occupationsRouter from './routes/occupations.js';
 import roleRouter from './routes/role.js';
 import { createDatabaseIfNotExists } from "./db.js";
-import { Socials } from "./models/socials.js";
-import { Roles } from "./models/roles.js";
-import { Occupations } from "./models/occupations.js";
-import { Projects } from "./models/projects.js";
 
-const PORT = process.env.NODE_LOCAL_PORT || 4000;
+const PORT = process.env.SERVER_PORT || 4000;
 const app = express();
 
 dotenv.config();
@@ -30,7 +26,7 @@ app.listen(PORT, async () => {
 
 app.use(
   cors({
-    origin: ["http://localhost:5173"],
+    origin: ["http://localhost:5173", "http://localhost:8000", "http://localhost:80"],
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
   })
